@@ -1,14 +1,8 @@
-from selenium import webdriver
+from utils.driver import create_driver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+from utils.waits import wait_for_url
 
-options = Options()
-options.add_argument("--start-maximized") # El navegador se abrira en ventana grande
-
-
-driver = webdriver.Chrome(options=options)
-
-driver.implicitly_wait(5) # Espera implicita de 5 segundos
+driver = create_driver()
 
 try:
   driver.get("https://www.saucedemo.com/")
@@ -20,18 +14,26 @@ try:
   driver.find_element(By.CSS_SELECTOR, 'input[type="submit"]').click()
 
   # 2) Validar login exitoso
-  assert "/inventory.html" in driver.current_url
+  wait_for_url(driver, "/inventory.html")
 
   titulo = driver.find_element(By.CSS_SELECTOR, "div.header_secondary_container .title").text
 
   assert titulo == "Products"
+
+  app_logo = driver.find_element(By.CLASS_NAME, "app_logo").text
+
+  assert app_logo == "Swag Labs"
 
   # 3) Comprobar existencia de productos y elementos importantes de la interfaz
   productos = driver.find_elements(By.CLASS_NAME,"inventory_item")
 
   assert len(productos) > 0
 
-  # filtros = driver.find_element(By.CLASS_NAME, "select_container")
+  filtros = driver.find_element(By.CLASS_NAME, "select_container")
+  assert filtros.is_displayed()
+
+  menu = driver.find_element(By.CLASS_NAME, "bm-burger-button")
+  assert filtros.is_displayed()
 
   producto = productos[0]
 
@@ -49,9 +51,11 @@ try:
 
   driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
 
-  assert "/cart.html" in driver.current_url
+  wait_for_url(driver, "/cart.html")
 
   productosCarrito = driver.find_elements(By.CLASS_NAME,"cart_item")
+
+  assert len(productosCarrito) > 0
 
   productoCarrito = productosCarrito[0]
 

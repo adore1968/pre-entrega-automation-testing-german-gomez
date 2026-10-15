@@ -2,6 +2,9 @@ from utils.driver import create_driver
 from selenium.webdriver.common.by import By
 from utils.waits import wait_for_url
 import logging
+from pages.login_page import LoginPage
+from pages.inventory_page import InventoryPage
+from pages.cart_page import CartPage
 
 logging.basicConfig(
     filename="ejecucion.log",
@@ -15,68 +18,71 @@ driver = create_driver()
 def test_saucedemo():
   try:
     logging.info("Iniciando prueba de SauceDemo")
+    # Login
 
-    driver.get("https://www.saucedemo.com/")
+    login_page = LoginPage(driver)
 
-    # 1) Login
-    driver.find_element(By.ID, "user-name").send_keys("standard_user")
-    driver.find_element(By.ID, "password").send_keys("secret_sauce")
+    login_page.abrir()
 
-    driver.find_element(By.CSS_SELECTOR, 'input[type="submit"]').click()
+    login_page.iniciar_sesion("standard_user", "secret_sauce")
 
     # 2) Validar login exitoso
     wait_for_url(driver, "/inventory.html")
 
-    titulo = driver.find_element(By.CSS_SELECTOR, "div.header_secondary_container .title").text
+    inventory_page = InventoryPage(driver)
+
+    titulo = inventory_page.obtener_titulo()
 
     assert titulo == "Products"
 
-    app_logo = driver.find_element(By.CLASS_NAME, "app_logo").text
+    app_logo = inventory_page.obtener_logo()
 
     assert app_logo == "Swag Labs"
 
     logging.info("Login realizado correctamente")
 
     # 3) Comprobar existencia de productos y elementos importantes de la interfaz
-    productos = driver.find_elements(By.CLASS_NAME,"inventory_item")
+    productos = inventory_page.obtener_productos()
 
     assert len(productos) > 0
 
-    filtros = driver.find_element(By.CLASS_NAME, "select_container")
+    filtros = inventory_page.obtener_filtros()
     assert filtros.is_displayed()
 
-    menu = driver.find_element(By.CLASS_NAME, "bm-burger-button")
+    menu = inventory_page.obtener_menu()
     assert menu.is_displayed()
 
     logging.info("Productos encontrados correctamente")
 
     producto = productos[0]
 
-    nombreProducto = producto.find_element(By.CLASS_NAME, "inventory_item_name").text
-    precioProducto = producto.find_element(By.CLASS_NAME, "inventory_item_price").text
+    nombre_producto = inventory_page.obtener_nombre_producto(producto)
+    precio_producto = inventory_page.obtener_precio_producto(producto)
 
-    print(f"Nombre del producto: {nombreProducto}. Precio: ${precioProducto}")
+    print(f"Nombre del producto: {nombre_producto}. Precio: ${precio_producto}")
 
     # 4) Interaccion con productos
-    producto.find_element(By.TAG_NAME, "button").click()
+    inventory_page.agregar_al_carrito(producto)
 
-    badge = driver.find_element(By.CLASS_NAME, "shopping_cart_badge").text
+    badge = inventory_page.obtener_badge()
 
     assert badge == "1"
 
-    driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
+    inventory_page.ir_al_carrito()
 
     wait_for_url(driver, "/cart.html")
 
-    productosCarrito = driver.find_elements(By.CLASS_NAME,"cart_item")
+    cart_page = CartPage(driver)
 
-    assert len(productosCarrito) > 0
+    productos_carrito = cart_page.obtener_productos_carrito()
 
-    productoCarrito = productosCarrito[0]
+    assert len(productos_carrito) > 0
 
-    nombreProductoCarrito = productoCarrito.find_element(By.CLASS_NAME, "inventory_item_name").text
+    producto_carrito = productos_carrito[0]
 
-    assert nombreProducto == nombreProductoCarrito
+    nombre_producto_carrito = cart_page.obtener_nombre_producto_carrito(producto_carrito)
+
+    assert nombre_producto == nombre_producto_carrito
 
     logging.info("Prueba finalizada correctamente")
   except Exception:

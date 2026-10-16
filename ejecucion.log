@@ -10,3 +10,98 @@
 2026-10-15 19:16:15,343 - INFO - Login realizado correctamente
 2026-10-15 19:16:15,449 - INFO - Productos encontrados correctamente
 2026-10-15 19:16:15,767 - INFO - Prueba finalizada correctamente
+2026-10-15 23:13:41,795 - INFO - Iniciando prueba de SauceDemo
+2026-10-15 23:13:43,585 - INFO - Login realizado correctamente
+2026-10-15 23:13:43,858 - INFO - Productos encontrados correctamente
+2026-10-15 23:13:44,070 - ERROR - La prueba falló
+Traceback (most recent call last):
+  File "C:\Users\germa\OneDrive\Desktop\proyectos\pre-entrega-automation-testing-german-gomez\tests\test_saucedemo.py", line 64, in test_saucedemo
+    badge = inventory_page.obtener_badge()
+  File "C:\Users\germa\OneDrive\Desktop\proyectos\pre-entrega-automation-testing-german-gomez\pages\inventory_page.py", line 49, in obtener_badge
+    return self.driver.find_element(*self.badge).text
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\germa\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 914, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\germa\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 506, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\germa\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":".shopping_cart_badge"}
+  (Session info: chrome=155.0.8059.84); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7046fe745]
+	(No symbol) [0x7ff7042b3d00]
+	(No symbol) [0x7ff7040e3f3d]
+	(No symbol) [0x7ff70413f6ed]
+	(No symbol) [0x7ff70413f9bc]
+	(No symbol) [0x7ff704197ed7]
+	(No symbol) [0x7ff704194b5a]
+	(No symbol) [0x7ff704131462]
+	(No symbol) [0x7ff704132273]
+	(No symbol) [0x7ff7047a17b1]
+	(No symbol) [0x7ff7047d87c7]
+	(No symbol) [0x7ff7047cc85e]
+	(No symbol) [0x7ff70447884e]
+	(No symbol) [0x7ff7042c0415]
+	(No symbol) [0x7ff7042bbdf4]
+	(No symbol) [0x7ff7042bbf84]
+	(No symbol) [0x7ff7042a7f7c]
+	(No symbol) [0x7ffaf2b3cd87]
+	(No symbol) [0x7ffaf3aecaec]
+
+2026-10-15 23:22:50,658 - INFO - Iniciando prueba de SauceDemo
+2026-10-15 23:22:51,953 - INFO - Login realizado correctamente
+2026-10-15 23:22:52,048 - INFO - Productos encontrados correctamente
+2026-10-15 23:23:00,151 - ERROR - La prueba falló
+Traceback (most recent call last):
+  File "C:\Users\germa\OneDrive\Desktop\proyectos\pre-entrega-automation-testing-german-gomez\tests\test_saucedemo.py", line 72, in test_saucedemo
+    wait_for_url(driver, "/cart.html")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\germa\OneDrive\Desktop\proyectos\pre-entrega-automation-testing-german-gomez\utils\waits.py", line 6, in wait_for_url
+    wait.until(EC.url_contains(url))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\germa\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\support\wait.py", line 112, in until
+    value = method(self._driver)
+  File "C:\Users\germa\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 112, in _predicate
+    return url in driver.current_url
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: argument of type 'NoneType' is not a container or iterable
+2026-10-15 23:27:09,476 - INFO - Iniciando prueba de SauceDemo
+2026-10-15 23:27:10,921 - INFO - Login realizado correctamente
+2026-10-15 23:27:11,016 - INFO - Productos encontrados correctamente
+2026-10-15 23:27:21,676 - ERROR - La prueba falló
+Traceback (most recent call last):
+  File "C:\Users\germa\OneDrive\Desktop\proyectos\pre-entrega-automation-testing-german-gomez\tests\test_saucedemo.py", line 72, in test_saucedemo
+    wait_for_url(driver, "/cart.html")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\germa\OneDrive\Desktop\proyectos\pre-entrega-automation-testing-german-gomez\utils\waits.py", line 6, in wait_for_url
+    wait.until(EC.url_contains(url))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\germa\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+2026-10-15 23:28:50,147 - INFO - Iniciando prueba de SauceDemo
+2026-10-15 23:28:51,620 - INFO - Login realizado correctamente
+2026-10-15 23:28:51,706 - INFO - Productos encontrados correctamente
+2026-10-15 23:28:52,155 - INFO - Prueba finalizada correctamente
+2026-10-15 23:46:01,583 - INFO - Iniciando prueba de SauceDemo
+2026-10-15 23:46:02,825 - INFO - Login realizado correctamente
+2026-10-15 23:46:06,775 - INFO - Iniciando prueba de SauceDemo
+2026-10-15 23:46:07,922 - INFO - Login realizado correctamente
+2026-10-15 23:46:08,003 - INFO - Productos encontrados correctamente
+2026-10-15 23:46:08,367 - INFO - Prueba finalizada correctamente
+2026-10-16 00:05:53,770 - INFO - Productos encontrados correctamente
+2026-10-16 00:05:57,930 - INFO - Iniciando prueba de SauceDemo
+2026-10-16 00:05:59,202 - INFO - Login realizado correctamente
+2026-10-16 00:06:03,103 - INFO - Iniciando prueba de SauceDemo
+2026-10-16 00:06:04,163 - INFO - Login realizado correctamente
+2026-10-16 00:06:04,163 - ERROR - La prueba falló
+Traceback (most recent call last):
+  File "C:\Users\germa\OneDrive\Desktop\proyectos\pre-entrega-automation-testing-german-gomez\tests\test_saucedemo.py", line 20, in test_saucedemo
+    test_catalog(usuario_logueado)
+                 ^^^^^^^^^^^^^^^^
+NameError: name 'usuario_logueado' is not defined

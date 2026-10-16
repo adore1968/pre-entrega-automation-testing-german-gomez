@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class InventoryPage:
   def __init__(self, driver):
@@ -45,8 +47,10 @@ class InventoryPage:
   def agregar_al_carrito(self, producto):
     producto.find_element(*self.boton_producto).click()
 
-  def obtener_badge(self): 
-    return self.driver.find_element(*self.badge).text
+  def obtener_badge(self):
+    return WebDriverWait(self.driver, 10).until(
+        EC.presence_of_element_located(self.badge)
+    ).text
 
   def ir_al_carrito(self):
     self.driver.find_element(*self.link_carrito).click()

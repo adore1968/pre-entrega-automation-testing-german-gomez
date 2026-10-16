@@ -4,65 +4,102 @@ Proyecto de automatización de pruebas funcionales sobre la plataforma **SauceDe
 
 ## Propósito
 
-El objetivo del proyecto es automatizar diferentes casos de prueba sobre la plataforma SauceDemo, verificando el funcionamiento del inicio de sesión, la navegación por el catálogo de productos y la interacción con el carrito de compras.
+El objetivo del proyecto es automatizar casos de prueba funcionales para verificar el inicio de sesión, la navegación por el catálogo de productos y la interacción con el carrito de compras.
 
-Además, el proyecto incorpora mecanismos de registro de ejecución, generación de reportes HTML y captura automática de evidencia ante fallos.
+El proyecto utiliza el patrón de diseño **Page Object Model (POM)** para organizar las interacciones con la aplicación y facilitar el mantenimiento y la reutilización del código.
 
 ## Tecnologías utilizadas
 
-* Python
-* Selenium WebDriver
-* Pytest
-* pytest-html
-* Google Chrome
+- Python
+- Selenium WebDriver
+- Pytest
+- pytest-html
+- Google Chrome
+
+## Estructura del proyecto
+
+```text
+.
+├── pages/
+│   ├── __init__.py
+│   ├── login_page.py
+│   ├── inventory_page.py
+│   └── cart_page.py
+├── tests/
+│   ├── __init__.py
+│   ├── test_login.py
+│   ├── test_catalog.py
+│   └── test_cart.py
+├── utils/
+│   ├── driver.py
+│   └── waits.py
+├── conftest.py
+├── pytest.ini
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
 
 ## Pruebas automatizadas
 
 ### Inicio de sesión
 
-* Navegación a la página de inicio de sesión.
-* Ingreso de credenciales válidas.
-* Verificación de redirección a `/inventory.html`.
-* Verificación del título **"Products"**.
-* Verificación de **"Swag Labs"**.
+- Apertura de la página de inicio de sesión.
+- Ingreso de credenciales válidas.
+- Espera de la redirección a `/inventory.html`.
+- Verificación del título **Products**.
+- Verificación del logo **Swag Labs**.
 
 ### Catálogo de productos
 
-* Verificación del título de la página de inventario.
-* Verificación de la presencia de productos.
-* Verificación de elementos importantes de la interfaz.
-* Obtención del nombre y precio del primer producto.
+- Verificación de la presencia de productos.
+- Verificación de la visibilidad de los filtros y el menú.
+- Obtención del nombre y precio del primer producto.
 
 ### Carrito de compras
 
-* Agregado de un producto al carrito.
-* Verificación del contador del carrito.
-* Navegación hacia la página del carrito.
-* Verificación de la presencia del producto agregado.
-* Verificación de que el producto del carrito coincida con el producto seleccionado.
-
-## Evidencias y registro de ejecución
-
-El proyecto incluye mecanismos para facilitar el análisis de las ejecuciones:
-
-* **Reporte HTML:** generado mediante `pytest-html`.
-* **Logs de ejecución:** registrados automáticamente en `ejecucion.log`.
-* **Capturas de pantalla:** generadas automáticamente cuando una prueba falla.
+- Selección y agregado de un producto al carrito.
+- Verificación del contador del carrito.
+- Navegación a la página del carrito.
+- Verificación de la presencia del producto agregado.
+- Comparación del producto seleccionado con el producto del carrito.
 
 ## Instalación
 
-Instalar las dependencias necesarias mediante:
+Se recomienda utilizar un entorno virtual de Python.
+
+Crear el entorno virtual:
 
 ```bash
-pip install selenium pytest pytest-html
+python -m venv .venv
 ```
+
+Activarlo en Windows:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Instalar las dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+Se requiere tener Google Chrome instalado. Selenium WebDriver administra el controlador del navegador según la configuración del entorno.
 
 ## Ejecución de las pruebas
 
-Para ejecutar las pruebas:
+Para ejecutar todos los tests y mostrar su resultado detallado:
 
 ```bash
 python -m pytest -v
+```
+
+Para ejecutar un archivo de pruebas específico:
+
+```bash
+python -m pytest tests/test_login.py -v
 ```
 
 Para ejecutar las pruebas y generar un reporte HTML:
@@ -71,37 +108,31 @@ Para ejecutar las pruebas y generar un reporte HTML:
 python -m pytest -v --html=reporte.html
 ```
 
-El reporte se generará en el archivo:
+El reporte se genera en el archivo `reporte.html`, en el directorio desde el que se ejecuta el comando.
 
-```text
-reporte.html
-```
+## Evidencias de ejecución
 
-## Archivos de evidencia
+Según la configuración y las funcionalidades implementadas, pueden generarse archivos como:
 
-Luego de ejecutar las pruebas, pueden generarse los siguientes archivos en el directorio del proyecto:
+- `reporte.html`: reporte HTML de pytest.
+- `ejecucion.log`: registro de eventos de ejecución.
+- `captura_fallo.png`: captura de pantalla ante un fallo, si está implementada esa lógica.
 
-```text
-ejecucion.log
-reporte.html
-captura_fallo.png
-```
+Estos archivos son artefactos locales de ejecución y no forman parte de los tests en sí.
 
-`captura_fallo.png` se genera únicamente cuando ocurre un fallo durante la ejecución de una prueba.
+## Sitio bajo prueba
 
-## Sitio utilizado
-
-**SauceDemo:** https://www.saucedemo.com/
+[SauceDemo](https://www.saucedemo.com/)
 
 ## Credenciales de prueba
 
-**Usuario:**
+Usuario:
 
 ```text
 standard_user
 ```
 
-**Contraseña:**
+Contraseña:
 
 ```text
 secret_sauce

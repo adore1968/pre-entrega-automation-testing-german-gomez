@@ -3,54 +3,55 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class InventoryPage:
+  _TITLE = (By.CLASS_NAME, "title")
+  _PRODUCTS = (By.CLASS_NAME, "inventory_item")
+  _ADD_BUTTONS = (By.CSS_SELECTOR, "button[data-test*='add-to-cart']")
+  _CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
+  _CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
+  _PRODUCT_NAMES = (By.CLASS_NAME, "inventory_item_name")
+
+
   def __init__(self, driver):
     self.driver = driver
-    
-    self.titulo = (By.CSS_SELECTOR, "div.header_secondary_container .title")
-    self.logo = (By.CLASS_NAME, "app_logo")
-
-    self.productos = (By.CLASS_NAME, "inventory_item")
-    self.filtros = (By.CLASS_NAME, "select_container")
-    self.menu = (By.CLASS_NAME, "bm-burger-button")
-
-    self.nombre_producto = (By.CLASS_NAME, "inventory_item_name")
-    self.precio_producto = (By.CLASS_NAME, "inventory_item_price")
-
-    self.boton_producto = (By.TAG_NAME, "button")
-
-    self.badge = (By.CLASS_NAME, "shopping_cart_badge")
-    self.link_carrito = (By.CLASS_NAME, "shopping_cart_link")
+    self.wait = WebDriverWait(driver, 10)
 
 
   def obtener_titulo(self):
-    return self.driver.find_element(*self.titulo).text
+    """Obtiene el título de la página de inventario"""
+    titulo_elemento = self.wait.until(EC.visibility_of_element_located(self._TITLE))
+    return titulo_elemento.text
 
-  def obtener_logo(self):
-    return self.driver.find_element(*self.logo).text
-  
-  def obtener_productos(self):
-    return self.driver.find_elements(*self.productos)
+  def obtener_contador_carrito(self):
+    """Obtiene el número de productos en el carrito"""
+    try:
+      badge = self.driver.find_element(*self._CART_BADGE)
+      return int(badge.text)
+    except:
+      return 0
 
-  def obtener_filtros(self):
-    return self.driver.find_element(*self.filtros)
+  def agregar_producto_por_nombre(self, nombre_producto):
+    """
+    Agrega un producto específico al carrito buscándolo por nombre
+    """
+    productos = self.driver.find_elements(*self._PRODUCTS)
 
-  def obtener_menu(self):
-    return self.driver.find_element(*self.menu)
-  
-  def obtener_nombre_producto(self, producto):
-    return producto.find_element(*self.nombre_producto).text
+    for producto in productos:
+      try:
+        nombre_elemento = producto.find_element(By.CLASS_NAME, "inventory_item_name")
+        if nombre_elemento.text == nombre_producto:
+          boton_agregar = producto.find_element(By.TAG_NAME, "button")
+          boton_agregar.click()
+          return True
+      except Exception as e:
+        continue
 
-    
-  def obtener_precio_producto(self, producto):
-    return producto.find_element(*self.precio_producto).text
+    raise Exception(f"No se encontró el producto: {nombre_producto}")
 
-  def agregar_al_carrito(self, producto):
-    producto.find_element(*self.boton_producto).click()
-
-  def obtener_badge(self):
-    return WebDriverWait(self.driver, 10).until(
-        EC.presence_of_element_located(self.badge)
-    ).text
-
-  def ir_al_carrito(self):
-    self.driver.find_element(*self.link_carrito).click()
+  def agregar_primer_producto(self):
+    """Agrega el primer producto disponible al carrito"""
+    try:
+      primer_boton = self.wait.until(EC.element_to_be_clickable(self._ADD_BUTTONS))
+      primer_boton.click()
+      return True
+    except: 
+      raise Exception("No se pudo agregar el primer producto")

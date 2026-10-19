@@ -1,39 +1,53 @@
+import pytest
+from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
-import logging
-from utils.waits import wait_for_url
-from pages.cart_page import CartPage
+from utils.datos import leer_json_productos
 
-def test_cart(usuario_logueado):
-  inventory_page = InventoryPage(usuario_logueado)
+PRODUCTOS = leer_json_productos("datos/productos.json")
 
-  productos = inventory_page.obtener_productos()
+@pytest.mark.parametrize("producto", PRODUCTOS)
+def test_agregar_producto_desde_json(usuario_logueado, producto):
+  """
+  Test que agrega cada producto del JSON al carrito
+  """
+  inventory_page = usuario_logueado
+  nombre_producto = producto["nombre"]
 
-  assert len(productos) > 0
+  print(f"\n🛒 Agregando producto: {nombre_producto}")
 
-  producto = productos[0]
+  # Obtener contador inicial del carrito
+  contador_inicial = inventory_page.obtener_contador_carrito()
+  print(f"  Contador inicial {contador_inicial}")
 
-  nombre_producto = inventory_page.obtener_nombre_producto(producto)
+  # Agregar producto específico
+  inventory_page.agregar_producto_por_nombre(nombre_producto)
 
-  inventory_page.agregar_al_carrito(producto)
-  
-  badge = inventory_page.obtener_badge()
-  
-  assert badge == "1"
-  
-  inventory_page.ir_al_carrito()
+  # Verificar que el contador se incrementó
+  contador_final = inventory_page.obtener_contador_carrito()
+  print(f"  Contador final: {contador_final}")
 
-  wait_for_url(usuario_logueado, "/cart.html")
+  assert contador_final == contador_inicial + 1, f"El contador no se incrementó correctamente para {nombre_producto}"
 
-  cart_page = CartPage(usuario_logueado)
+  print (f" ✅ Producto agregado correctamente")
 
-  productos_carrito = cart_page.obtener_productos_carrito()
+def test_agregar_todos_los_productos(usuario_logueado):
+  """
+  Test que agrega todos los productos de una vez
+  """
+  inventory_page = usuario_logueado
+  productos = leer_json_productos("datos/productos.json")
 
-  assert len(productos_carrito) > 0
+  print(f"\n🛒 Agregando {len(productos)} productos al carrito")
 
-  producto_carrito = productos_carrito[0]
+  contador_inicial = inventory_page.obtener_contador_carrito()
 
-  nombre_producto_carrito = cart_page.obtener_nombre_producto_carrito(producto_carrito)
+  for i, producto in enumerate(productos, 1):
+    nombre_producto = producto["nombre"]
+    print(f"  {i}. Agregando: {nombre_producto}")
 
-  assert nombre_producto == nombre_producto_carrito
+    inventory_page.agregar_producto_por_nombre(nombre_producto)
+    contador_actual = inventory_page.obtener_contador_carrito()
 
-  logging.info("Prueba finalizada correctamente")
+    assert contador_actual == contador_inicial + i, f"Contador incorrecto después de agregar {nombre_producto}"
+
+  print(f"✅ Todos los productos agregados. Total en carrito: {contador_actual}")

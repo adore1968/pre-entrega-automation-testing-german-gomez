@@ -5,6 +5,7 @@ from utils.datos import leer_json_productos
 
 PRODUCTOS = leer_json_productos("datos/productos.json")
 
+@pytest.mark.ui
 @pytest.mark.parametrize("producto", PRODUCTOS)
 def test_agregar_producto_desde_json(usuario_logueado, producto):
   """
@@ -30,6 +31,7 @@ def test_agregar_producto_desde_json(usuario_logueado, producto):
 
   print (f" ✅ Producto agregado correctamente")
 
+@pytest.mark.ui
 def test_agregar_todos_los_productos(usuario_logueado):
   """
   Test que agrega todos los productos de una vez
